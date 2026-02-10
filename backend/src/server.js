@@ -62,11 +62,22 @@ app.use('/api/grievances', require('./routes/grievances'));
 
 // Health check route
 app.get('/health', async (req, res) => {
-    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
+    let dbStatus = 'disconnected';
+    let dbError = null;
+
+    if (mongoose.connection.readyState === 1) {
+        dbStatus = 'connected';
+    } else if (!process.env.MONGODB_URI) {
+        dbError = 'MONGODB_URI is missing in Vercel environment variables';
+    } else {
+        dbError = 'Connection failed. Check MongoDB Atlas IP whitelist (0.0.0.0/0).';
+    }
+
     res.status(200).json({
         success: true,
         message: 'RiseVoice API is running',
         database: dbStatus,
+        error: dbError,
         timestamp: new Date().toISOString(),
         environment: process.env.NODE_ENV || 'production'
     });
