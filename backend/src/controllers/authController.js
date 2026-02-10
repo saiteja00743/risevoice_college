@@ -61,9 +61,18 @@ exports.login = async (req, res) => {
 
     } catch (error) {
         console.error('Login error:', error);
+
+        // Help debug missing environment variables
+        if (!process.env.JWT_SECRET) {
+            return res.status(500).json({
+                success: false,
+                message: 'INTERNAL ERROR: JWT_SECRET is missing on server.'
+            });
+        }
+
         res.status(500).json({
             success: false,
-            message: 'Server error while logging in'
+            message: `Server error: ${error.message}`
         });
     }
 };

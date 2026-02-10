@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
 import '../../domain/entities/grievance.dart';
 
 class GrievanceDetailScreen extends StatelessWidget {

@@ -95,6 +95,7 @@ class AppTheme {
       ),
     ),
     
+    /*
     cardTheme: CardTheme(
       color: lightCardBg,
       elevation: 0,
@@ -103,6 +104,7 @@ class AppTheme {
         side: BorderSide(color: Colors.grey.shade200, width: 1),
       ),
     ),
+    */
     
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(
@@ -240,6 +242,7 @@ class AppTheme {
       ),
     ),
     
+    /*
     cardTheme: CardTheme(
       color: darkCardBg,
       elevation: 0,
@@ -248,6 +251,7 @@ class AppTheme {
         side: BorderSide(color: Colors.white.withOpacity(0.1), width: 1),
       ),
     ),
+    */
     
     elevatedButtonTheme: ElevatedButtonThemeData(
       style: ElevatedButton.styleFrom(

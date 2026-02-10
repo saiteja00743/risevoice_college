@@ -1,10 +1,11 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
-const multer = require('multer'); // Added this to fix the crash!
+const multer = require('multer');
 const connectDB = require('./config/database');
 require('dotenv').config();
 
@@ -60,12 +61,14 @@ app.use('/api/auth', require('./routes/auth'));
 app.use('/api/grievances', require('./routes/grievances'));
 
 // Health check route
-app.get('/health', (req, res) => {
+app.get('/health', async (req, res) => {
+    const dbStatus = mongoose.connection.readyState === 1 ? 'connected' : 'disconnected';
     res.status(200).json({
         success: true,
         message: 'RiseVoice API is running',
+        database: dbStatus,
         timestamp: new Date().toISOString(),
-        environment: process.env.NODE_ENV
+        environment: process.env.NODE_ENV || 'production'
     });
 });
 

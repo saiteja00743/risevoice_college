@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/theme/app_theme.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
 import 'login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {

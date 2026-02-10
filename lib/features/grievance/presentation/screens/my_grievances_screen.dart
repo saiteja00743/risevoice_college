@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
 import '../../domain/entities/grievance.dart';
 import 'grievance_detail_screen.dart';
 

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'dart:async';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
 import 'onboarding_screen.dart';
 
 class SplashScreen extends StatefulWidget {

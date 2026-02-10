@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
-import 'otp_verification_screen.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
+import 'package:dio/dio.dart';
+import 'package:rise_voice/features/dashboard/presentation/screens/home_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -15,6 +16,7 @@ class _LoginScreenState extends State<LoginScreen> {
   final _formKey = GlobalKey<FormState>();
   final _rollNumberController = TextEditingController();
   final _emailController = TextEditingController();
+  final _dio = Dio();
   bool _isLoading = false;
   bool _biometricEnabled = false;
 
@@ -25,7 +27,7 @@ class _LoginScreenState extends State<LoginScreen> {
     super.dispose();
   }
 
-  Future<void> _sendOTP() async {
+  Future<void> _login() async {
     if (!_formKey.currentState!.validate()) {
       return;
     }
@@ -34,22 +36,51 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    // Simulate API call
-    await Future.delayed(const Duration(seconds: 2));
-
-    setState(() {
-      _isLoading = false;
-    });
-
-    if (mounted) {
-      Navigator.of(context).push(
-        MaterialPageRoute(
-          builder: (context) => OTPVerificationScreen(
-            rollNumber: _rollNumberController.text,
-            email: _emailController.text,
-          ),
-        ),
+    try {
+      final response = await _dio.post(
+        '${AppConstants.baseUrl}/auth/login',
+        data: {
+          'rollNumber': _rollNumberController.text,
+          'email': _emailController.text,
+        },
       );
+
+      if (response.statusCode == 200 && response.data['success'] == true) {
+        // Success!
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Login successful!'),
+              backgroundColor: AppTheme.successGreen,
+            ),
+          );
+          
+          Navigator.of(context).pushAndRemoveUntil(
+            MaterialPageRoute(builder: (context) => const HomeScreen()),
+            (route) => false,
+          );
+        }
+      }
+    } catch (e) {
+      if (mounted) {
+        String errorMessage = 'Login failed. Please check your credentials.';
+        if (e is DioException && e.response?.data != null) {
+          errorMessage = e.response?.data['message'] ?? errorMessage;
+        }
+        
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(errorMessage),
+            backgroundColor: AppTheme.errorRed,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
@@ -225,7 +256,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 SizedBox(
                   width: double.infinity,
                   child: ElevatedButton(
-                    onPressed: _isLoading ? null : _sendOTP,
+                    onPressed: _isLoading ? null : _login,
                     child: _isLoading
                         ? const SizedBox(
                             height: 20,
@@ -236,7 +267,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   AlwaysStoppedAnimation<Color>(Colors.white),
                             ),
                           )
-                        : const Text('Send OTP'),
+                        : const Text('Login'),
                   ),
                 ),
                 const SizedBox(height: 24),

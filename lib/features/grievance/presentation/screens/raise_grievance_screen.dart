@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
 
 class RaiseGrievanceScreen extends StatefulWidget {
   const RaiseGrievanceScreen({super.key});

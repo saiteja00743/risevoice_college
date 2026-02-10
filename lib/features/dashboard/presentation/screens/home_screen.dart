@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import '../../../core/theme/app_theme.dart';
-import '../../../core/constants/app_constants.dart';
-import '../../../grievance/presentation/screens/raise_grievance_screen.dart';
-import '../../../grievance/presentation/screens/my_grievances_screen.dart';
-import '../../../grievance/presentation/screens/emergency_grievance_screen.dart';
+import 'package:rise_voice/core/theme/app_theme.dart';
+import 'package:rise_voice/core/constants/app_constants.dart';
+import 'package:rise_voice/features/grievance/presentation/screens/raise_grievance_screen.dart';
+import 'package:rise_voice/features/grievance/presentation/screens/my_grievances_screen.dart';
+import 'package:rise_voice/features/grievance/presentation/screens/emergency_grievance_screen.dart';
 import '../widgets/stats_card.dart';
 import '../widgets/quick_action_card.dart';
 
