@@ -1,17 +1,21 @@
-require('dotenv').config();
 const express = require('express');
 const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 const compression = require('compression');
 const rateLimit = require('express-rate-limit');
+const multer = require('multer'); // Added this to fix the crash!
 const connectDB = require('./config/database');
+require('dotenv').config();
 
 // Initialize express app
 const app = express();
 
-// Connect to database
-connectDB();
+// Middleware to ensure DB is connected before handling requests
+app.use(async (req, res, next) => {
+    await connectDB();
+    next();
+});
 
 // Security middleware
 app.use(helmet());
@@ -141,40 +145,21 @@ app.use((err, req, res, next) => {
     });
 });
 
-// Start server
-const PORT = process.env.PORT || 3000;
+// Start server if NOT on Vercel
+if (!process.env.VERCEL) {
+    const PORT = process.env.PORT || 3000;
+    app.listen(PORT, () => {
+        console.log(`✅ Server running on port ${PORT}`);
+    });
+}
 
-const server = app.listen(PORT, () => {
-    console.log(`
-╔═══════════════════════════════════════════════════════╗
-║                                                       ║
-║   🎯 RiseVoice API Server                            ║
-║                                                       ║
-║   Status: ✅ Running                                 ║
-║   Port: ${PORT}                                      ║
-║   Environment: ${process.env.NODE_ENV || 'development'}                           ║
-║   College: ${process.env.COLLEGE_NAME || 'Kakatiya Degree College'}  ║
-║                                                       ║
-║   Endpoints:                                          ║
-║   - http://localhost:${PORT}/                         ║
-║   - http://localhost:${PORT}/health                   ║
-║   - http://localhost:${PORT}/api/auth                 ║
-║   - http://localhost:${PORT}/api/grievances           ║
-║                                                       ║
-╚═══════════════════════════════════════════════════════╝
-  `);
-});
-
-// Handle unhandled promise rejections
+// Handle errors
 process.on('unhandledRejection', (err) => {
     console.error('❌ Unhandled Promise Rejection:', err);
-    server.close(() => process.exit(1));
 });
 
-// Handle uncaught exceptions
 process.on('uncaughtException', (err) => {
     console.error('❌ Uncaught Exception:', err);
-    server.close(() => process.exit(1));
 });
 
 module.exports = app;

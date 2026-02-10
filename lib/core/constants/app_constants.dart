@@ -5,9 +5,9 @@ class AppConstants {
   static const String collegeName = 'Kakatiya Degree College (Autonomous)';
   static const String collegeLocation = 'Hanamkonda';
   
-  // API Endpoints (Update with your backend URL)
-  static const String baseUrl = 'https://api.risevoice.edu.in';
-  static const String apiVersion = '/api/v1';
+  // API Endpoints
+  static const String baseUrl = 'https://risevoice-college.vercel.app/api';
+  static const String apiVersion = ''; // Already included in baseUrl
   
   // Storage Keys
   static const String authTokenKey = 'auth_token';

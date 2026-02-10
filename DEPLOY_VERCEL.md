@@ -20,13 +20,36 @@ git push origin main
 2.  Sign in with GitHub.
 3.  Click **Add New** -> **Project**.
 4.  Select your `risevoice-backend` repository.
-5.  **Project Name**: `risevoice-api`
-6.  **Root Directory**: Set this to `backend` (if you are deploying from a monorepo).
+5.  **CRITICAL SETTING:** 
+    *   Find the **"Root Directory"** field.
+    *   Click **"Edit"** and select the **`backend`** folder.
+    *   Click **"Continue"**.
+6.  **Project Name**: `risevoice-api`
 7.  **Environment Variables**:
-    *   Add `MONGODB_URI` from your Atlas dashboard.
-    *   Add `JWT_SECRET` (any random string).
+    *   Add `MONGODB_URI` (Use the Atlas string you gave me).
+    *   Add `JWT_SECRET` (Use any secret string).
     *   Add `ALLOWED_ORIGINS` as `*`.
     *   Add `NODE_ENV` as `production`.
+
+---
+
+## 🛠️ Troubleshooting 500 Errors
+
+If you still see a "Function Crashed" error:
+
+### 1. MongoDB IP Whitelist (Must do this!)
+Vercel uses many different IP addresses. You **MUST** allow everyone to connect to your MongoDB Atlas:
+1.  Go to **MongoDB Atlas**.
+2.  Click **Network Access** in the left sidebar.
+3.  Click **"Add IP Address"**.
+4.  Select **"Allow Access From Anywhere"** (this adds `0.0.0.0/0`).
+5.  Click **Confirm**.
+
+### 2. Check Vercel Logs
+1.  On your Vercel Dashboard, click on your project.
+2.  Go to the **"Logs"** tab.
+3.  Refresh your app in another tab.
+4.  See the error message (it will tell you exactly what is missing).
 
 ### 3. Deploy
 1.  Click **Deploy**.
